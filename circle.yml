@@ -15,5 +15,5 @@ deployment:
   production:
     branch: "master"
     commands:
-      - chmod +x deploy.sh
+      - chmod +x gradlew.sh
       - ./deploy.sh
