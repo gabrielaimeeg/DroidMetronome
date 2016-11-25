@@ -2,11 +2,10 @@ jdk: oraclejdk8
 language: android
 android:
   components:
-    - tools # to get the new `repository-11.xml`
-    - tools # see https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943)
+    - tools
     - platform-tools
-    - build-tools-24.0.2
-    - android-24
+    - build-tools-25.0.0
+    - android-25
     - extra-android-m2repository
     - extra-google-m2repository
 
