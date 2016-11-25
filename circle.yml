@@ -16,10 +16,4 @@ deployment:
     branch: "master"
     commands:
       - ./gradlew publishApkRelease
-        -Dorg.gradle.project.track=production
-  beta:
-    production:
-      branch: "configureCircleCI"
-      commands:
-        - ./gradlew publishApkRelease
-          -Dorg.gradle.project.track=production
+      - Dorg.gradle.project.track=production
