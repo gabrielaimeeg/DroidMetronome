@@ -15,5 +15,5 @@ deployment:
   production:
     branch: "master"
     commands:
-      - ./gradlew publishApkRelease
-      - Dorg.gradle.project.track=production
+      - chmod +x deploy.sh
+      - ./deploy.sh
