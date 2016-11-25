@@ -14,6 +14,7 @@ android:
   
   before_install:
   - "chmod +x gradlew"
+  - "chmod +x build.sh"
 
 script:
    - ./gradlew build connectedCheck
