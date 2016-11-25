@@ -15,4 +15,11 @@ deployment:
   production:
     branch: "master"
     commands:
-      - sh ./deploy.sh
+      - ./gradlew publishApkRelease
+        -Dorg.gradle.project.track=production
+  beta:
+    production:
+      branch: "configureCircleCI"
+      commands:
+        - ./gradlew publishApkRelease
+          -Dorg.gradle.project.track=production
