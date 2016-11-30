@@ -31,6 +31,7 @@ android:
     - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
 
 addons:
+  sonarqube: true
   apt_packages:
     #- pandoc
   artifacts:
