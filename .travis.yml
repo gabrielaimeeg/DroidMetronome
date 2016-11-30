@@ -14,7 +14,9 @@ before_script:
   - android list targets
   - echo no | android create avd --force -n test -t android-25 --abi google_apis/armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
+  - curl http://is.gd/android_wait_for_emulator > android-wait-for-emulator
+  - chmod u+x android-wait-for-emulator
+  - ./android-wait-for-emulator
 script:
   - android list target
   - ./gradlew build jacocoTestReport --stacktrace
