@@ -18,6 +18,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    plugins{
+        id "org.sonarqube" version "6.1"
+    }
+    sonarqube{
+        properties {
+            property "sonar.ProjectName", "DroidMetronome"
+            property "sonar.ProjectKey", "com.droidfoundry.droidmetronome"
+            property "sonar.sources", "src"
+            property "sonar.sourceEncoding", "UTF-8"
+            property "sonar.projectVersion", "3.0"
+        }
+    }
 }
 
 dependencies {
@@ -28,6 +40,6 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support:support-annotations:24.2.1'
-    compile 'com.android.support:design:24.2.1'    
+    compile 'com.android.support:design:24.2.1'
 //    compile 'com.getbase:floatingactionbutton:1.9.1'
 }
