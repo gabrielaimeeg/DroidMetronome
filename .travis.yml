@@ -20,17 +20,17 @@ env:
     - ANDROID_TARGET=android-24
     - ANDROID_ABI=armeabi-v7a
     #- secure: ********* # defines SONAR_TOKEN=abcdef0123456789
-
 android:
   components:
     - platform-tools
     - tools
-    - build-tools-25.0.1
+    - build-tools-24.0.2
     - android-24
-    - extra-android-m2repository
-    # Emulator for the tests
     - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
-
+    - extra-android-support
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
 addons:
   sonarqube: true
   apt_packages:
@@ -38,32 +38,14 @@ addons:
   artifacts:
     paths:
       - $(git ls-files -o | grep build/outputs | tr "\n" ":")
-
-before_install:
-  - pip install --user codecov
-
 before_script:
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
-
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
+before_install:
+  - pip install --user codecov
 script:
   #- ./gradlew check -PdisablePreDex --continue --stacktrace
-  - android-wait-for-emulator
   - adb devices
-  - adb shell input keyevent 82 &
   - sonar-scanner -Dsonar.login=$SONAR_TOKEN
-  #- ./gradlew connectedAndroidTest
-  #- ./gradlew connectedAndroidTest -PdisablePreDex --continue --stacktrace
-  #- rm /home/travis/.gradle/caches/2.8/plugin-resolution/cache.properties.lock
-
-#after_success:
- # - ./gradlew jacocoFullReport
- #- codecov
-
-#after_failure:
-  #- pandoc builder/build/reports/tests/index.html -t plain | sed -n '/^Failed tests/,/default-package/p'
-
-#after_script:
-  # print lint results details
-  #- for f in app/build/outputs/lint-results.html; do pandoc $f -t plain; done
-  #- for f in data/build/outputs/lint-results.html; do pandoc $f -t plain; done
