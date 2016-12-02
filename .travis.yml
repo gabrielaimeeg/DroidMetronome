@@ -9,58 +9,42 @@ cache:
     - $HOME/.gradle/daemon
     - $HOME/.gradle/native
     - $HOME/.gradle/wrapper
-
-env:
-  matrix:
-    
-  global:
-    # wait up to 10 minutes for adb to connect to emulator
-    - ADB_INSTALL_TIMEOUT=10
-    - ANDROID_TARGET=android-24
-    - ANDROID_ABI=armeabi-v7a
-
-android:
-  components:
-    - platform-tools
-    - tools
-    - build-tools-25.0.1
-    - android-24
-    - extra-android-m2repository
-
-    # Emulator for the tests
-    - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
+    - $HOME/.sonar
 
 addons:
-  apt_packages:
-    #- pandoc
+  sonarqube: true
   artifacts:
     paths:
       - $(git ls-files -o | grep build/outputs | tr "\n" ":")
 
-before_install:
-  - pip install --user codecov
+env:
+  global:
+    - secure: "Jj2uRAAlF0sreZo0YDLExWCQa5h7eFyqtmkxHv9Wt9W09I2dh62z3UUEIohDmtW+LpJimH/2S1WcXUA9vjNBp5tqCewjblVuiRcL4Lkc+nIoP0+Lnaydb8RONBm0bpVZ0OQSaPCkPMyrDV+QdL8kHd831R+D6DMfYpJRxjaMKy89nK4AJnBZdBZ4jun5MiN/WGHMEumsW96hzxoy8fr2FmZvki+o8MlLhIXJUvPkPsTR0XzcBQjXrsCtjPa9nbA4jB2qbGRvWeKogbxpAcF5UdM4ZwxA+fUhnQWnYtn17n4Xb7pmA3Eh5BQ3qIsMATR8b8jg5oDy++OUlsNzOeqOTHiNRxcjIju89OgW6ZbpLc8d0NQVhbCXOWn1wqIZHbn6gDqYNauFndWneOxKyfvcZNjQIgeLn5yZidHbvVGvfBenpoThoLEdJFAivQgj9jJl4b75GBKFcUqptfm5M7rkaTRBY2WuJryspmtV7F/LunrLjHpXbfUtnvBEQ6DpuvKWcJoq+lLO8BBkZ1PpsLtvkd5pIMrLVxoorLsCMZxjpvPqNJk6PGoC+7jxLnotdQmKFCn1hV10kx5Vqf2QxwlZHQihtQwRCWAv712CnlZr2YWb0M0qU31q5oTp1rXTnAqwo4QAaoRs4syvYptjjefWsfYhczsmFI8Q+ZVNXH3OI2E="
+    # wait up to 10 minutes for adb to connect to emulator
+    - ADB_INSTALL_TIMEOUT=10
+    - ANDROID_TARGET=android-24
+    - ANDROID_ABI=armeabi-v7a
+    #- secure: ********* # defines SONAR_TOKEN=abcdef0123456789
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-24.0.2
+    - android-24
+    - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
+    - extra-android-support
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
 
 before_script:
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
-
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
+before_install:
+  - pip install --user codecov
 script:
   #- ./gradlew check -PdisablePreDex --continue --stacktrace
-  - android-wait-for-emulator
   - adb devices
-  - adb shell input keyevent 82 &
-  #- ./gradlew connectedAndroidTest
-  #- ./gradlew connectedAndroidTest -PdisablePreDex --continue --stacktrace
-  #- rm /home/travis/.gradle/caches/2.8/plugin-resolution/cache.properties.lock
-
-#after_success:
- # - ./gradlew jacocoFullReport
- #- codecov
-
-#after_failure:
-  #- pandoc builder/build/reports/tests/index.html -t plain | sed -n '/^Failed tests/,/default-package/p'
-
-#after_script:
-  # print lint results details
-  #- for f in app/build/outputs/lint-results.html; do pandoc $f -t plain; done
-  #- for f in data/build/outputs/lint-results.html; do pandoc $f -t plain; done
+  - sonar-scanner -Dsonar.login=$SONAR_TOKEN

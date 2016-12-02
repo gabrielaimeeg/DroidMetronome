@@ -1,0 +1,5 @@
+projectKey=com.droidfoundry.droidmetronome
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/com.droidfoundry.droidmetronome
+ceTaskId=AVi70IhT_MTKSw5DWeHn
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVi70IhT_MTKSw5DWeHn
