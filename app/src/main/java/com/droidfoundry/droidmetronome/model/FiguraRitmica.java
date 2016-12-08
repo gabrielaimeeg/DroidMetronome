@@ -5,20 +5,20 @@ package com.droidfoundry.droidmetronome.model;
  */
 public enum FiguraRitmica {
 
-    SEMIBREVE(1),
-    MINIMA(2),
-    SEMIMINIMA(3),
-    COLCHEIA(4),
-    SEMICOLCHEIA(5),
-    FUSA(6),
-    SEMIFUSA(7);
+    SemiBreve(1),
+    Minima(2),
+    SemiMinima(3),
+    Colcheia(4),
+    SemiColcheia(5),
+    Fusa(6),
+    SemiFusa(7);
 
 
     private final int valor;
 
     /**
      * Construtor de figura ritmica
-     * @param valor o valor da figura ritmica
+     * @param valor
      */
     FiguraRitmica(int valor){
         this.valor = valor;
@@ -26,9 +26,9 @@ public enum FiguraRitmica {
 
     /**
      * retorna o valor da figura ritmica
-     * @return figura ritmica
+     * @return
      */
     public int getValue(){
-        return valor;
+        return(valor);
     }
 }
