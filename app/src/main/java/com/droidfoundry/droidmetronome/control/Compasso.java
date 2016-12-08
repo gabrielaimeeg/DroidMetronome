@@ -1,15 +1,18 @@
-package com.droidfoundry.droidmetronome.model;
+package com.droidfoundry.droidmetronome.control;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Looper;
 
-import com.droidfoundry.droidmetronome.control.FrontConversor;
-import com.droidfoundry.droidmetronome.control.HardwareActions;
-import com.droidfoundry.droidmetronome.control.SoundTimeLoop;
+import com.droidfoundry.droidmetronome.model.FiguraRitmica;
+import com.droidfoundry.droidmetronome.model.TemplateSound;
+import com.droidfoundry.droidmetronome.model.UserInterface;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by pedro on 12/05/15.
+ * Executa o som durante determinando tempo
  */
 public class Compasso extends IntentService {
 
@@ -18,6 +21,7 @@ public class Compasso extends IntentService {
     private int batidasMaximo;
 
     private FiguraRitmica figuraRitmica;
+    private TemplateSound templateSound;
     private SoundTimeLoop timer;
 
     /**
@@ -34,17 +38,20 @@ public class Compasso extends IntentService {
     public void onCreate() {
         super.onCreate();
 
+        UserInterface userInterface = EventBus.getDefault().removeStickyEvent(UserInterface.class);
+
         // Configurações de som no geral
-        FiguraRitmica figRit = FrontConversor.getInstance().getFiguraRitmica();
-        int min = FrontConversor.getInstance().getTempoMinutos();
-        long freq = FrontConversor.getInstance().getFrequenciaBPM();
-        int bat = FrontConversor.getInstance().getQuantidadeBatidas();
+        FiguraRitmica figRit = userInterface.getFiguraRitmica();
+        int min = userInterface.getTempoMinutos();
+        long freq = userInterface.getFrequenciaBPM();
+        int bat = userInterface.getQuantidadeBatidas();
 
         this.setSoundConfiguration(figRit, min, freq, bat);
+        this.templateSound = userInterface.getSound();
 
         // Configuraçoes luz e vibração
-        boolean vibrating = FrontConversor.getInstance().isVibracao();
-        boolean lighting = FrontConversor.getInstance().isFlash();
+        boolean vibrating = userInterface.isVibracao();
+        boolean lighting = userInterface.isFlash();
 
         // Definindo configurações de hardware
         HardwareActions.getInstance().setHardwareConfiguration(vibrating, lighting, getApplicationContext());
@@ -61,10 +68,10 @@ public class Compasso extends IntentService {
         double frequenciaSegundos = this.conversorBPM(this.frequenciaBPM); // 2bps
         long delay = 1000 / (long)frequenciaSegundos; // 0.5s
 
-        int tempoMiliSegundos = (this.tempoMinutos * 60 * 1000); // (60000 milisegundos)
+        int tempoMiliSegundos = this.tempoMinutos * 60 * 1000; // 60000 milisegundos
 
         // Iniciando ciclo de batidas
-        timer = new SoundTimeLoop(tempoMiliSegundos, delay / this.figuraRitmica.getValue());
+        timer = new SoundTimeLoop(this.templateSound, tempoMiliSegundos, delay / this.figuraRitmica.getValue());
         timer.setBatidasMaximo(this.batidasMaximo);
 
         timer.setFiguraRitmica(this.figuraRitmica);
@@ -100,7 +107,7 @@ public class Compasso extends IntentService {
      * @return Frequencia convertida para batidas por segundo.
      */
     private double conversorBPM(long bpm) {
-        return (bpm / (double) 60);
+        return bpm / (double) 60;
     }
 
     /**

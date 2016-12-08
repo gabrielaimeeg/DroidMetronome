@@ -12,8 +12,10 @@ import android.widget.NumberPicker;
 import android.widget.ToggleButton;
 
 import com.droidfoundry.droidmetronome.R;
-import com.droidfoundry.droidmetronome.control.FrontConversor;
-import com.droidfoundry.droidmetronome.model.Compasso;
+import com.droidfoundry.droidmetronome.control.Compasso;
+import com.droidfoundry.droidmetronome.model.UserInterface;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -133,6 +135,9 @@ public class MainActivity extends ActionBarActivity {
      * @param
      */
     public void executar(){
+
+        UserInterface userInterface = new UserInterface();
+
         SharedPreferences sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         Boolean vibracao = sharedPrefs.getBoolean(
@@ -140,16 +145,17 @@ public class MainActivity extends ActionBarActivity {
         Boolean flash = sharedPrefs.getBoolean(
                 getString(R.string.pref_flash_key), Boolean.parseBoolean(getString(R.string.pref_flash_default)));
 
-        FrontConversor.getInstance().setVibracao(vibracao);
-        FrontConversor.getInstance().setFlash(flash);
+        userInterface.setVibracao(vibracao);
+        userInterface.setFlash(flash);
 
-        FrontConversor.getInstance().setTempoMinutos(npTimer.getValue());
-        FrontConversor.getInstance().setFrequenciaBPM(npBPM.getValue());
-        FrontConversor.getInstance().setQuantidadeBatidas(npQntBatidas.getValue());
+        userInterface.setTempoMinutos(npTimer.getValue());
+        userInterface.setFrequenciaBPM(npBPM.getValue());
+        userInterface.setQuantidadeBatidas(npQntBatidas.getValue());
 
-        FrontConversor.getInstance().createSomById(getIdSom(), this);
-        FrontConversor.getInstance().createFiguraRitmicaById(npValorBase.getValue());
+        userInterface.createSomById(getIdSom(), this);
+        userInterface.createFiguraRitmicaById(npValorBase.getValue());
 
+        EventBus.getDefault().postSticky(userInterface);
         startService(new Intent(this,Compasso.class)); // executar
     }
 
@@ -181,7 +187,6 @@ public class MainActivity extends ActionBarActivity {
         if(inExecution){
             stopService(new Intent(this, Compasso.class)); // encerrar service executar
             inExecution = false;
-
         }
 
         super.onDestroy();

@@ -34,20 +34,21 @@ public class HardwareActions {
     public void startConfiguration(){
         // Configurações gerais
         this.vibrate = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        this.hardwareSupported = HardwareSupported();
+        this.hardwareSupported = hardwareSupported();
     }
 
     /**
      * Define as configurações de hardware
      * @param vibrating - Define vibrações
      * @param lighting - Define luz
+     * @param context - Contexto da aplicacao
      */
     public void setHardwareConfiguration(boolean vibrating ,boolean lighting ,Context context){
         this.isVibrating = vibrating;
         this.isLighting = lighting;
         this.context = context;
 
-        this.hardwareSupported = this.HardwareSupported();
+        this.hardwareSupported = this.hardwareSupported();
     }
 
     /**
@@ -62,12 +63,12 @@ public class HardwareActions {
      * Verifica se o hardware é compativel
      * @return
      */
-    private boolean HardwareSupported(){
+    private boolean hardwareSupported(){
         PackageManager pm = context.getPackageManager();
 
-        boolean flash = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-        boolean camera = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
-        return(flash && camera);
+        boolean switchFlash = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+        boolean switchCamera = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
+        return switchFlash && switchCamera;
     }
 
     /**
@@ -82,9 +83,7 @@ public class HardwareActions {
      * Ativa a luz
      */
     public void activeLighting(){
-        if((isLighting) && (hardwareSupported)){
-
-            if(camera == null) {
+        if((isLighting) && (hardwareSupported) && (camera == null)){
 
                 new Thread(){
 
@@ -99,16 +98,14 @@ public class HardwareActions {
                     }
                 }.start();
             }
-        }
     }
 
     /**
      * Desativa a luz
      */
     public void desactiveLighting(){
-        if((isLighting) && (hardwareSupported)){
+        if((isLighting) && (hardwareSupported) && (camera != null)){
 
-            if(camera != null) {
                 new Thread(){
 
                     @Override
@@ -116,8 +113,7 @@ public class HardwareActions {
                         camera.release();
                         camera = null;
                     }
-                }.start();
-            }
+                }.start();  
         }
     }
 }

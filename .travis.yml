@@ -1,6 +1,10 @@
 language: android
 jdk: oraclejdk8
-sudo: false
+
+addons:
+  sonarqube:
+    token:
+      secure: e4VKguaenm50U/U+/3Z5fBEJnLNK9wWnw7DT3YByX4Qeg5T70f+i3Jl90RPlW6LpX0zX+/n3torn+0VpCuHrFtxWte7MWnaeRDpsZyPL0Hn17wpEMLnCsg4CdOPNC8OVa+Todv8TSr/h7yWLSTJ2WreAXJtLdCssvUS5c8HHERHLSNgiFVaqQGM3R8Vk8sYYpdkMsi5Y+VbYPWp9ZfDUZZsOCiqaUwPU2PG/4jq6Un+L+4zybnb3m5XU4tpcYX/+p0pIaMh1VK+jU5tPgBqFP6+hwPeqkfmXFd7EFSUxRTUFc+0xnoW1Guue1kZmMVUUF+zUSW8yCNERQTyqtpVOuD8BA65pwTd2i6unYdg4NkHy41nMSTlJjyAmVb4l3jGtRZodPpAnEiRVxEESmYtUZ8ZItNF3dCDeDL9owC56tIgDx0lIzp19imQHyGpkQyjiShhmqYl39w2P1ruBVv4tE71eRUKY/QRw98rXTouYaafHeMaLB6aehXa8ckQnuESFfR2hxOsfW5tGXUmloLKtvgUJ3LbAJjitVRMA3unolU5uhbuf6/Ld9OyPKHO3vShywNcOs2mPPNV6TfV5ES3yxldeEdtc2LaRgrn6O4e7PKqXoF+HOiAYUPvtxAgxAQQO9HpCnAK4VwldoPUQU8qJlmkiuRz0TX3MHbwoo5HZ9IQ=
 
 cache:
   directories:
@@ -9,42 +13,35 @@ cache:
     - $HOME/.gradle/daemon
     - $HOME/.gradle/native
     - $HOME/.gradle/wrapper
-    - $HOME/.sonar
-
-addons:
-  sonarqube: true
-  artifacts:
-    paths:
-      - $(git ls-files -o | grep build/outputs | tr "\n" ":")
+    - $HOME/.sonar/cache
 
 env:
-  global:
-    - secure: "Jj2uRAAlF0sreZo0YDLExWCQa5h7eFyqtmkxHv9Wt9W09I2dh62z3UUEIohDmtW+LpJimH/2S1WcXUA9vjNBp5tqCewjblVuiRcL4Lkc+nIoP0+Lnaydb8RONBm0bpVZ0OQSaPCkPMyrDV+QdL8kHd831R+D6DMfYpJRxjaMKy89nK4AJnBZdBZ4jun5MiN/WGHMEumsW96hzxoy8fr2FmZvki+o8MlLhIXJUvPkPsTR0XzcBQjXrsCtjPa9nbA4jB2qbGRvWeKogbxpAcF5UdM4ZwxA+fUhnQWnYtn17n4Xb7pmA3Eh5BQ3qIsMATR8b8jg5oDy++OUlsNzOeqOTHiNRxcjIju89OgW6ZbpLc8d0NQVhbCXOWn1wqIZHbn6gDqYNauFndWneOxKyfvcZNjQIgeLn5yZidHbvVGvfBenpoThoLEdJFAivQgj9jJl4b75GBKFcUqptfm5M7rkaTRBY2WuJryspmtV7F/LunrLjHpXbfUtnvBEQ6DpuvKWcJoq+lLO8BBkZ1PpsLtvkd5pIMrLVxoorLsCMZxjpvPqNJk6PGoC+7jxLnotdQmKFCn1hV10kx5Vqf2QxwlZHQihtQwRCWAv712CnlZr2YWb0M0qU31q5oTp1rXTnAqwo4QAaoRs4syvYptjjefWsfYhczsmFI8Q+ZVNXH3OI2E="
-    # wait up to 10 minutes for adb to connect to emulator
+  global: 
     - ADB_INSTALL_TIMEOUT=10
     - ANDROID_TARGET=android-24
     - ANDROID_ABI=armeabi-v7a
-    #- secure: ********* # defines SONAR_TOKEN=abcdef0123456789
+
 android:
   components:
     - platform-tools
     - tools
-    - build-tools-24.0.2
+    - build-tools-25.0.1
     - android-24
-    - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
-    - extra-android-support
-    - extra-google-google_play_services
-    - extra-google-m2repository
     - extra-android-m2repository
+    - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
+
+before_install:
+  - chmod +x gradlew
 
 before_script:
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-audio -no-window &
-  - android-wait-for-emulator
+  - emulator -avd test -no-skin -no-audio -no-window &
   - adb shell input keyevent 82 &
-before_install:
-  - pip install --user codecov
+  - android-wait-for-emulator
+
 script:
-  #- ./gradlew check -PdisablePreDex --continue --stacktrace
   - adb devices
-  - sonar-scanner -Dsonar.login=$SONAR_TOKEN
+  - sonar-scanner -X -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN
+
+notifications:
+  email: false

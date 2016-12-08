@@ -1,11 +1,7 @@
 package com.droidfoundry.droidmetronome.control;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.hardware.Camera;
 import android.os.CountDownTimer;
 import android.os.Looper;
-import android.os.Vibrator;
 
 import com.droidfoundry.droidmetronome.model.FiguraRitmica;
 import com.droidfoundry.droidmetronome.model.TemplateSound;
@@ -15,7 +11,7 @@ import com.droidfoundry.droidmetronome.model.TemplateSound;
  */
 public class SoundTimeLoop extends CountDownTimer{
 
-    private TemplateSound som;
+    private TemplateSound templateSound;
     private FiguraRitmica figuraRitmica;
 
     private boolean starting = false;
@@ -25,18 +21,18 @@ public class SoundTimeLoop extends CountDownTimer{
 
     /**
      * Construtor do timer
+     * @param templateSound - som a ser tocado
      * @param millisInFuture - tempo máximo
      * @param countDownInterval - tempo entre toques
      */
-    public SoundTimeLoop(long millisInFuture, long countDownInterval) {
+    public SoundTimeLoop(TemplateSound templateSound, long millisInFuture, long countDownInterval) {
         super(millisInFuture, countDownInterval);
 
         // Tempo de intervalo
         HardwareActions.getInstance().setDelay(countDownInterval);
 
         // Som a ser tocado
-        TemplateSound som = FrontConversor.getInstance().getSound();
-        this.som = som;
+        this.templateSound = templateSound;
 
     }
 
@@ -60,14 +56,14 @@ public class SoundTimeLoop extends CountDownTimer{
 
                 // Modo vibratório
                 HardwareActions.getInstance().activeVibration();
-                som.playSoundAlto();
+                templateSound.playSoundAlto();
 
                 batidasAtual++;
             }else{
 
                 // Modo vibratório
                 HardwareActions.getInstance().activeVibration();
-                som.playSoundBaixo();
+                templateSound.playSoundBaixo();
 
                 batidasAtual = 1;
             }
@@ -76,8 +72,8 @@ public class SoundTimeLoop extends CountDownTimer{
             HardwareActions.getInstance().desactiveLighting();
 
 
-        }catch(Exception erro) {
-            erro.printStackTrace();
+        }catch(RuntimeException erro) {
+
         } finally {
             // Desativar flash
             HardwareActions.getInstance().desactiveLighting();

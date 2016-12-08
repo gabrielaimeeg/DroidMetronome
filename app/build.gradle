@@ -1,5 +1,16 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.sonarqube'
+apply plugin: "org.sonarqube"
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "com.droidfoundry:droidMetronome"
+        property "sonar.projectName", "DroidMetronome"
+        property "sonar.projectVersion","3.0"
+        property "sonar.sourceEncoding","UTF-8"
+        property "sonar.sources","app/src"
+    }
+}
+
 
 android {
     compileSdkVersion 24
@@ -19,17 +30,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    plugins{
-        id "org.sonarqube" version "6.1"
-    }
-    sonarqube{
-        properties {
-            property "sonar.ProjectName", "DroidMetronome"
-            property "sonar.ProjectKey", "com.droidfoundry.droidmetronome"
-            property "sonar.sources", "."
-            property "sonar.sourceEncoding", "UTF-8"
-            property "sonar.projectVersion", "3.0"
-        }
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -42,5 +44,7 @@ dependencies {
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support:support-annotations:24.2.1'
     compile 'com.android.support:design:24.2.1'
+    compile 'org.greenrobot:eventbus:3.0.0'
+
 //    compile 'com.getbase:floatingactionbutton:1.9.1'
 }

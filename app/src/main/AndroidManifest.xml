@@ -34,7 +34,7 @@
 
         <service
             android:enabled="true"
-            android:name=".model.Compasso" />
+            android:name=".control.Compasso" />
 
         <activity
             android:name=".view.ConfiguracoesActivity"
