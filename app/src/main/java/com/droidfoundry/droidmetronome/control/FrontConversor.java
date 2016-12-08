@@ -1,4 +1,4 @@
-package com.droidfoundry.droidmetronome.model;
+package com.droidfoundry.droidmetronome.control;
 
 /**
  * Created by pedro on 16/05/15.
@@ -6,12 +6,21 @@ package com.droidfoundry.droidmetronome.model;
 
 import android.content.Context;
 
+import com.droidfoundry.droidmetronome.model.FiguraRitmica;
+import com.droidfoundry.droidmetronome.model.Sound_8Bits;
+import com.droidfoundry.droidmetronome.model.Sound_beep;
+import com.droidfoundry.droidmetronome.model.Sound_hiHats;
+import com.droidfoundry.droidmetronome.model.Sound_kickClap;
+import com.droidfoundry.droidmetronome.model.Sound_rimShot;
+import com.droidfoundry.droidmetronome.model.TemplateSound;
+
 
 /**
  * Classe responsável por ligar o front-end ao back-end
  */
-public class UserInterface {
+public class FrontConversor {
 
+    private static FrontConversor instance;
     private TemplateSound sound;
 
     private long frequenciaBPM;
@@ -24,6 +33,23 @@ public class UserInterface {
     private FiguraRitmica figuraRitmica;
 
     /**
+     * Retorna a instancia interna do objeto
+     * @return
+     */
+    public synchronized static FrontConversor getInstance(){
+        if(instance == null){
+            instance = new FrontConversor();
+        }
+
+        return(instance);
+    }
+
+    /**
+     * Construtor privado do padrão singleton
+     */
+    private FrontConversor(){}
+
+    /**
      * Define o som do metrônomo com base no definido pelo usuário.
      * @param idTipoSom - Id para escolha do som (caso não exista é atribuido um valor padrão).
      * @param context - Contexto aonde o som será exibido.
@@ -33,32 +59,32 @@ public class UserInterface {
         switch(idTipoSom){
             //Som 1:
             case 1:
-                sound = new TemplateSound(context, SoundId.BITS_BAIXO, SoundId.BITS_BAIXO);
+                sound = new Sound_8Bits(context);
                 break;
 
             //Som 2:
             case 2:
-                sound = new TemplateSound(context, SoundId.HIHATS_ALTO, SoundId.HIHATS_BAIXO);
+                sound = new Sound_hiHats(context);
                 break;
 
             //Som 3:
             case 3:
-                sound = new TemplateSound(context, SoundId.KICKCLAP_ALTO, SoundId.KICKCLAP_BAIXO);
+                sound = new Sound_kickClap(context);
                 break;
 
             //Som 4:
             case 4:
-                sound = new TemplateSound(context, SoundId.BEEP_ALTO, SoundId.BEEP_BAIXO);
+                sound = new Sound_rimShot(context);
                 break;
 
             //Som 5:
             case 5:
-                sound = new TemplateSound(context, SoundId.RIMSHOT_ALTO, SoundId.RIMSHOT_BAIXO);
+                sound = new Sound_beep(context);
                 break;
 
             //Som padrão
             default:
-                sound = new TemplateSound(context, SoundId.BITS_ALTO, SoundId.BITS_BAIXO);
+                sound = new Sound_8Bits(context);
 
         }
     }
@@ -72,36 +98,36 @@ public class UserInterface {
         switch(idFiguraRitmica){
 
             case 1:
-                figuraRitmica = FiguraRitmica.SEMIBREVE;
+                figuraRitmica = FiguraRitmica.SemiBreve;
                 break;
 
             case 2:
-                figuraRitmica = FiguraRitmica.MINIMA;
+                figuraRitmica = FiguraRitmica.Minima;
                 break;
 
             case 3:
-                figuraRitmica = FiguraRitmica.SEMIMINIMA;
+                figuraRitmica = FiguraRitmica.SemiMinima;
                 break;
 
             case 4:
-                figuraRitmica = FiguraRitmica.COLCHEIA;
+                figuraRitmica = FiguraRitmica.Colcheia;
                 break;
 
             case 5:
-                figuraRitmica = FiguraRitmica.SEMICOLCHEIA;
+                figuraRitmica = FiguraRitmica.SemiColcheia;
                 break;
 
             case 6:
-                figuraRitmica = FiguraRitmica.FUSA;
+                figuraRitmica = FiguraRitmica.Fusa;
                 break;
 
             case 7:
-                figuraRitmica = FiguraRitmica.SEMIFUSA;
+                figuraRitmica = FiguraRitmica.SemiFusa;
                 break;
 
             //Som padrão
             default:
-                figuraRitmica = FiguraRitmica.SEMIBREVE;
+                figuraRitmica = FiguraRitmica.SemiBreve;
 
         }
     }
