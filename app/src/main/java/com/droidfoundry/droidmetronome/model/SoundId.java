@@ -17,24 +17,5 @@ public enum SoundId {
     KICKCLAP_ALTO(R.raw.kick_clap_02),
     KICKCLAP_BAIXO(R.raw.kick_clap_01),
     RIMSHOT_ALTO(R.raw.rim_shot_01),
-    RIMSHOT_BAIXO(R.raw.rim_shot_02);
-
-
-    private final int valor;
-
-    /**
-     * Construtor de SoundId
-     * @param valor o identificador do som
-     */
-    SoundId(int valor){
-        this.valor = valor;
-    }
-
-    /**
-     * Retorna o identificador do som
-     * @return o identificador do som
-     */
-    public int getValue(){
-        return valor;
-    }
+    RIMSHOT_BAIXO(R.raw.rim_shot_02)
 }

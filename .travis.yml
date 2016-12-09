@@ -3,13 +3,14 @@ jdk: oraclejdk8
 
 addons:
   sonarqube: true
-  
+
 sonarqube:
   branches:
   - master
+  - FixIssuesJapa
 
 env:
-  global: 
+  global:
     - secure: e4VKguaenm50U/U+/3Z5fBEJnLNK9wWnw7DT3YByX4Qeg5T70f+i3Jl90RPlW6LpX0zX+/n3torn+0VpCuHrFtxWte7MWnaeRDpsZyPL0Hn17wpEMLnCsg4CdOPNC8OVa+Todv8TSr/h7yWLSTJ2WreAXJtLdCssvUS5c8HHERHLSNgiFVaqQGM3R8Vk8sYYpdkMsi5Y+VbYPWp9ZfDUZZsOCiqaUwPU2PG/4jq6Un+L+4zybnb3m5XU4tpcYX/+p0pIaMh1VK+jU5tPgBqFP6+hwPeqkfmXFd7EFSUxRTUFc+0xnoW1Guue1kZmMVUUF+zUSW8yCNERQTyqtpVOuD8BA65pwTd2i6unYdg4NkHy41nMSTlJjyAmVb4l3jGtRZodPpAnEiRVxEESmYtUZ8ZItNF3dCDeDL9owC56tIgDx0lIzp19imQHyGpkQyjiShhmqYl39w2P1ruBVv4tE71eRUKY/QRw98rXTouYaafHeMaLB6aehXa8ckQnuESFfR2hxOsfW5tGXUmloLKtvgUJ3LbAJjitVRMA3unolU5uhbuf6/Ld9OyPKHO3vShywNcOs2mPPNV6TfV5ES3yxldeEdtc2LaRgrn6O4e7PKqXoF+HOiAYUPvtxAgxAQQO9HpCnAK4VwldoPUQU8qJlmkiuRz0TX3MHbwoo5HZ9IQ=
     - ADB_INSTALL_TIMEOUT=10
     - ANDROID_TARGET=android-24

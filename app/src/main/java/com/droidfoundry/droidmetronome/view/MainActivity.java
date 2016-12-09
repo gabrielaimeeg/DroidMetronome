@@ -33,7 +33,6 @@ public class MainActivity extends ActionBarActivity {
     private NumberPicker npQntBatidas;
     private NumberPicker npValorBase;
     private NumberPicker npTimer;
-    private ToggleButton buttonPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +114,7 @@ public class MainActivity extends ActionBarActivity {
         npValorBase.setMaxValue(6);
         npValorBase.setValue(1);
 
-        buttonPlay = (ToggleButton)findViewById(R.id.floatingButtonPlay);
+        (ToggleButton) findViewById(R.id.floatingButtonPlay);
 
     }
 

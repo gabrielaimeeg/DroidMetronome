@@ -1,15 +1,10 @@
 <resources>
     <string name="app_name">DroidMetronome</string>
-
-
     <string name="play">Iniciar</string>
     <string name="stop">Parar</string>
     <string name="action_settings">Configurações</string>
-    <string name="action_definir_som">Definir som</string>
-
-
+    <string name="action_definir_som">Definir som</string
     <string name="hello_world">Hello world!</string>
-
     <string name="title_about">Informações</string>
     <string name="about">DroidMetronome é um projeto
         de aplicativo para Android que simula
@@ -21,15 +16,12 @@
         aumentar e diminuir a velocidade do compasso
         (BPM) e selecionar o tipo de som da batida
         do compasso.</string>
-
     <string name="pref_vibracao_key">switch_vibracao</string>
     <string name="pref_vibracao_title">Vibração</string>
     <string name="pref_vibracao_default">false</string>
     <string name="pref_vibracao_description">Quando está ativado vibra o celular sincronizado com as batidas do metronomo</string>
-
     <string name="pref_flash_key">switch_flash</string>
     <string name="pref_flash_title">Flash</string>
     <string name="pref_flash_default">false</string>
     <string name="pref_flash_description">Quando está ativado pisca o flash do celular sincronizado com as batidas do metronomo</string>
-
 </resources>
