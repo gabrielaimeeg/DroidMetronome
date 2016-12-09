@@ -4,9 +4,11 @@
 [![Stories in Backlog](https://img.shields.io/github/issues-raw/gabrielaimeeg/DroidMetronome.svg?label=backlog&style=plastic)](https://waffle.io/gabrielaimeeg/DroidMetronome)
 [![Stories in Ready](https://badge.waffle.io/gabrielaimeeg/DroidMetronome.png?label=ready&title=ready)](https://waffle.io/gabrielaimeeg/DroidMetronome)
 [![Travis](https://img.shields.io/travis/DroidFoundry/DroidMetronome.svg?style=plastic)](https://travis-ci.org/DroidFoundry/DroidMetronome)
-[![Codacy](https://img.shields.io/codacy/d043e8cac40e44d597499f8bae6c3603.svg?style=plastic)](https://www.codacy.com/app/gustavosotnas/DroidMetronome)
+[![SonarQube Coverage](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/coverage.svg)](https://sonarqube.com/dashboard?id=com.droidfoundry%3AdroidMetronome)
+[![SonarQube Tech Debt](https://img.shields.io/sonar/http/sonar.qatools.ru/ru.yandex.qatools.allure:allure-core/tech_debt.svg)](https://sonarqube.com/dashboard?id=com.droidfoundry%3AdroidMetronome)
 [![GitHub release](https://img.shields.io/github/release/gabrielaimeeg/DroidMetronome.svg?label=stable&style=plastic)](https://github.com/gabrielaimeeg/DroidMetronome/releases/latest)
 [![GitHub tag](https://img.shields.io/github/tag/gabrielaimeeg/DroidMetronome.svg?label=development&style=plastic)](https://github.com/gabrielaimeeg/DroidMetronome/releases)
+[![Codacy](https://img.shields.io/codacy/d043e8cac40e44d597499f8bae6c3603.svg?style=plastic)](https://www.codacy.com/app/gustavosotnas/DroidMetronome)
 
 Projeto de Software apresentado como trabalho de conclusão para obtenção de aprovação na disciplina de Arquitetura de Software, Gerência de Configuração de Software, Gerência de Projeto de Software, Manutenção de Software, Qualidade de Software, e Verificação e Validação, no 5º período do semestre 2015/1 do curso de Engenharia de Software da Universidade Federal de Goiás.
 
